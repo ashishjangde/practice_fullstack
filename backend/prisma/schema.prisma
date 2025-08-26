@@ -1,0 +1,200 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+//
+// ENUMS
+//
+enum UserRole {
+  USER
+  VENDOR
+  ADMIN
+}
+
+enum ShoeSize {
+  UK6
+  UK7
+  UK8
+  UK9
+  UK10
+  UK11
+}
+
+enum ShoeColor {
+  RED
+  BLACK
+  WHITE
+  BLUE
+  GREEN
+  YELLOW
+  GREY
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+//
+// MODELS
+//
+model Users {
+  id         String     @id @default(uuid())
+  name      String
+  email      String     @unique
+  password   String
+  role       UserRole   @default(USER)
+  updated_at DateTime   @updatedAt
+  created_at DateTime   @default(now())
+
+  // relations
+  sessions   Sessions[]
+  products   Product[]        // if vendor
+  orders     Order[]
+  cart       Cart?
+  wishlist   Wishlist?
+}
+
+model Sessions {
+  id           String   @id @default(uuid())
+  access_token String   @unique
+  ip_address   String
+  user_agent   String
+  expire_at    DateTime
+  created_at   DateTime @default(now())
+
+  user_id      String
+  user         Users    @relation(fields: [user_id], references: [id])
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  brand       String?
+  price       Float
+  stock       Int         @default(0)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+
+  vendor_id   String
+  vendor      Users       @relation(fields: [vendor_id], references: [id])
+
+  // relations
+  variants    ProductVariant[]
+  categories  Category[]  @relation("ProductCategories")
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  
+  wishlist    WishlistItem[]
+}
+
+model ProductVariant {
+  id         String    @id @default(uuid())
+  size       ShoeSize
+  color      ShoeColor
+  stock      Int       @default(0)
+
+  product_id String
+  product    Product   @relation(fields: [product_id], references: [id])
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  products  Product[]  @relation("ProductCategories")
+}
+
+//
+// CART + WISHLIST
+//
+model Cart {
+  id       String     @id @default(uuid())
+  user_id  String     @unique
+  user     Users      @relation(fields: [user_id], references: [id])
+  items    CartItem[]
+}
+
+model CartItem {
+  id          String   @id @default(uuid())
+  quantity    Int      @default(1)
+  product_id  String
+  cart_id     String
+
+  product     Product  @relation(fields: [product_id], references: [id])
+  cart        Cart     @relation(fields: [cart_id], references: [id])
+}
+
+model Wishlist {
+  id       String       @id @default(uuid())
+  user_id  String       @unique
+  user     Users        @relation(fields: [user_id], references: [id])
+  items    WishlistItem[]
+}
+
+model WishlistItem {
+  id          String   @id @default(uuid())
+  product_id  String
+  wishlist_id String
+
+  product     Product  @relation(fields: [product_id], references: [id])
+  wishlist    Wishlist @relation(fields: [wishlist_id], references: [id])
+}
+
+//
+// ORDERS + PAYMENTS
+//
+model Order {
+  id          String       @id @default(uuid())
+  status      OrderStatus  @default(PENDING)
+  total_price Float
+  created_at  DateTime     @default(now())
+
+  user_id     String
+  user        Users        @relation(fields: [user_id], references: [id])
+
+  items       OrderItem[]
+  payment     Payment?
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  quantity    Int      @default(1)
+  price       Float
+
+  order_id    String
+  product_id  String
+
+  order       Order    @relation(fields: [order_id], references: [id])
+  product     Product  @relation(fields: [product_id], references: [id])
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  amount      Float
+  status      PaymentStatus @default(PENDING)
+  method      String
+  created_at  DateTime      @default(now())
+
+  order_id    String @unique
+  order       Order  @relation(fields: [order_id], references: [id])
+}
