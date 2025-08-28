@@ -1,6 +1,7 @@
 import express from "express";
 import cookieparser from 'cookie-parser'
 import cors from "cors"
+import authRouter from "./routes/auth.routes";
 
 const app = express()
 
@@ -27,6 +28,8 @@ app.use(express.static("public"))
 app.use(cookieparser())
 
 // routes 
+
+app.use("/api/v1/auth" , authRouter)
 
 
 

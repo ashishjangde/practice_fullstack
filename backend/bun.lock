@@ -9,16 +9,17 @@
         "dotenv": "^17.2.1",
         "express": "^5.1.0",
         "prisma": "^6.14.0",
+        "zod": "^4.1.4",
       },
       "devDependencies": {
-        "@types/bun": "latest",
-      },
-      "peerDependencies": {
         "@prisma/client": "^6.14.0",
+        "@types/bun": "latest",
         "@types/cookie-parser": "^1.4.9",
         "@types/cors": "^2.8.19",
         "@types/dotenv": "^8.2.3",
         "@types/express": "^5.0.3",
+      },
+      "peerDependencies": {
         "typescript": "^5",
       },
     },
@@ -269,6 +270,8 @@
     "vary": ["vary@1.1.2", "", {}, "sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg=="],
 
     "wrappy": ["wrappy@1.0.2", "", {}, "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="],
+
+    "zod": ["zod@4.1.4", "", {}, "sha512-2YqJuWkU6IIK9qcE4k1lLLhyZ6zFw7XVRdQGpV97jEIZwTrscUw+DY31Xczd8nwaoksyJUIxCojZXwckJovWxA=="],
 
     "c12/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
 

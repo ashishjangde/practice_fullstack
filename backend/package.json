@@ -2,6 +2,10 @@
   "name": "backend",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@prisma/client": "^6.14.0",
@@ -18,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "prisma": "^6.14.0"
+    "prisma": "^6.14.0",
+    "zod": "^4.1.4"
   }
 }
