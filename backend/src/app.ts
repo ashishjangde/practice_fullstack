@@ -3,6 +3,9 @@ import cookieparser from 'cookie-parser'
 import cors from "cors"
 import authRouter from "./routes/auth.routes";
 import { errorMiddleware } from "./middlewares/error.middleware";
+import type{ Request, Response, NextFunction } from "express";
+import { ApiResponse } from "./advices/ApiResponse";
+import { ApiError } from "./advices/ApiError";
 
 const app = express()
 
@@ -27,6 +30,17 @@ app.use(express.urlencoded({
 app.use(express.static("public"))
 
 app.use(cookieparser())
+
+interface SyntaxErrorWithBody extends SyntaxError {
+    body?: any;
+}
+
+app.use((err: SyntaxErrorWithBody, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+        return res.status(400).json(new ApiResponse(null, new ApiError(400 , "Invalid Json Structure")));
+    }
+    next(err);
+});
 
 // routes 
 
