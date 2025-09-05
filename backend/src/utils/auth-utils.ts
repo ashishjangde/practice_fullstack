@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import type { Users } from "../generated/prisma";
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 
-interface IAccessPayload {
+export interface IAccessPayload {
     id : Users['id'],
     name : Users['name']
     email : Users['email']

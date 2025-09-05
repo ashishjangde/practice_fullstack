@@ -1,11 +1,18 @@
 import express from "express";
 import cookieparser from 'cookie-parser'
 import cors from "cors"
-import authRouter from "./routes/auth.routes";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import type{ Request, Response, NextFunction } from "express";
 import { ApiResponse } from "./advices/ApiResponse";
 import { ApiError } from "./advices/ApiError";
+
+//routes import 
+
+import authRouter from "./routes/auth.routes";
+import sessionRouter from "./routes/session.routes";
+import { authMiddleware } from "./middlewares/auth.middleware";
+
+//express
 
 const app = express()
 
@@ -42,11 +49,17 @@ app.use((err: SyntaxErrorWithBody, req: Request, res: Response, next: NextFuncti
     next(err);
 });
 
+
+
+
+
+
+
 // routes 
 
 app.use("/api/v1/auth" , authRouter)
 
-
+app.use("/api/v1/session",authMiddleware ,sessionRouter)
 
 
 //error middleware

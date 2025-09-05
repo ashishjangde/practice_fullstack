@@ -236,6 +236,7 @@ export const ResendVerificationCodeController = asyncHandler(async (req, res) =>
     })
   );
 });
+
 export const CheckVerificationCodeController = asyncHandler(async (req, res) => {
   const result = CheckVerificationCodeSchema.safeParse(req.body);
   if (!result.success) {
