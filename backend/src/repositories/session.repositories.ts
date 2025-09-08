@@ -22,7 +22,12 @@ export const SessionRepository = {
     return prisma.sessions.update({ where: { id }, data });
   },
 
-  deleteSessionById: async (id: string): Promise<Sessions> => {
-    return prisma.sessions.delete({ where: { id } });
+  deleteSessionById: async (id: string): Promise<boolean> => {
+    try {
+      await prisma.sessions.delete({ where: { id } });
+      return true;
+    } catch (error) {
+      return false;
+    }
   },
 };

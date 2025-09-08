@@ -9,7 +9,7 @@ import { UserRepository } from "../repositories/user.repositories";
 import { SessionRepository } from "../repositories/session.repositories";
 
 // Helper function to sanitize user data
-const sanitizeUser = (user: Users) => {
+export const sanitizeUser = (user: Users) => {
   const { password: _, verification_code: __, verification_code_expiry: ___, ...userWithoutSensitive } = user;
   return userWithoutSensitive;
 };
