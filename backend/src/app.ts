@@ -11,7 +11,6 @@ import { ApiError } from "./advices/ApiError";
 import authRouter from "./routes/auth.routes";
 import sessionRouter from "./routes/session.routes";
 import userRouter from "./routes/user.routes";
-import { authMiddleware } from "./middlewares/auth.middleware";
 
 //express
 
@@ -49,11 +48,6 @@ app.use((err: SyntaxErrorWithBody, req: Request, res: Response, next: NextFuncti
     }
     next(err);
 });
-
-
-
-
-
 
 
 // routes 

@@ -1,5 +1,6 @@
 import app from "./app";
 import { connectDb } from "./db/connectDb";
+import { redisClient } from "./db/redis.connection";
 import "dotenv/config";
 
 
@@ -17,7 +18,8 @@ app.get("/health", (req, res)=>{
 // })
 
 connectDb()
-    .then(() => {
+    .then(async () => {
+        await redisClient.connect();
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
